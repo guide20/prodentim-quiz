@@ -7,6 +7,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1559524392551091');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <style>
   :root {
     --ivory: #FBF8F2;
@@ -464,6 +481,9 @@
   // ============ CONFIGURE YOUR AFFILIATE LINK HERE ============
   const AFFILIATE_LINK = "https://90fac90ai66q0z4l5eg8zinjbk.hop.clickbank.net/?&traffic_source=facebook&traffic_type=paid";
   document.getElementById('ctaButton').href = AFFILIATE_LINK;
+  document.getElementById('ctaButton').addEventListener('click', function() {
+    if (typeof fbq !== 'undefined') { fbq('track', 'Lead'); }
+  });
   // ==============================================================
 
   const questions = [
@@ -499,6 +519,7 @@
   }
 
   function startQuiz() {
+    if (typeof fbq !== 'undefined') { fbq('trackCustom', 'QuizStarted'); }
     document.getElementById('screen-intro').classList.remove('active');
     document.getElementById('screen-questions').classList.add('active');
     renderQuestion();
@@ -524,6 +545,7 @@
 
   function selectOption(index) {
     answers.push(index);
+    if (typeof fbq !== 'undefined') { fbq('trackCustom', 'QuestionAnswered', {question_number: currentQ + 1}); }
     const opts = document.querySelectorAll('#screen-questions .option');
     opts[index].classList.add('selected');
     opts.forEach((o, i) => { if (i !== index) o.style.opacity = '0.5'; });
@@ -561,6 +583,7 @@
   }
 
   function showResults() {
+    if (typeof fbq !== 'undefined') { fbq('trackCustom', 'QuizCompleted'); }
     document.getElementById('screen-loading').classList.remove('active');
     document.getElementById('screen-results').classList.add('active');
     updateProgress(questions.length + 1);
