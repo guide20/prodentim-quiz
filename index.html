@@ -416,29 +416,8 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
   </div>
 
-  <!-- INTRO -->
-  <div class="screen active" id="screen-intro">
-    <div class="eyebrow">60-Second Oral Health Check</div>
-    <svg class="intro-icon" viewBox="0 0 56 56" fill="none">
-      <circle cx="28" cy="28" r="27" stroke="#244A40" stroke-width="1.5"/>
-      <path d="M18 30c2-8 6-12 10-12s8 4 10 12" stroke="#244A40" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M20 32c1.5 4 4 6 8 6s6.5-2 8-6" stroke="#E4674F" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="22" cy="24" r="1.6" fill="#244A40"/>
-      <circle cx="34" cy="24" r="1.6" fill="#244A40"/>
-    </svg>
-    <h1 class="headline">Check your smile health in 60 seconds</h1>
-    <p class="sub">Answer 5 quick questions about your smile and daily habits. In under a minute, you'll get a personalized snapshot of your oral health — and what to focus on next.</p>
-    <div class="intro-stats">
-      <div class="stat-pill"><span class="stat-num">60 sec</span><span class="stat-label">To complete</span></div>
-      <div class="stat-pill"><span class="stat-num">5</span><span class="stat-label">Quick questions</span></div>
-      <div class="stat-pill"><span class="stat-num">Free</span><span class="stat-label">No signup</span></div>
-    </div>
-    <button class="btn-primary" onclick="startQuiz()">Start My Assessment</button>
-    <p class="micro-trust">Private &amp; anonymous — your answers are never shared.</p>
-  </div>
-
-  <!-- QUESTIONS render here -->
-  <div class="screen" id="screen-questions"></div>
+  <!-- QUESTIONS render here (Question 1 includes the intro hook inline) -->
+  <div class="screen active" id="screen-questions"></div>
 
   <!-- LOADING -->
   <div class="screen" id="screen-loading">
@@ -518,10 +497,8 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
     document.getElementById('progressFill').style.width = pct + '%';
   }
 
-  function startQuiz() {
+  function initQuiz() {
     if (typeof fbq !== 'undefined') { fbq('trackCustom', 'QuizStarted'); }
-    document.getElementById('screen-intro').classList.remove('active');
-    document.getElementById('screen-questions').classList.add('active');
     renderQuestion();
     updateProgress(1);
   }
@@ -529,7 +506,12 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
   function renderQuestion() {
     const q = questions[currentQ];
     const container = document.getElementById('screen-questions');
+    const introHook = currentQ === 0 ? `
+      <div class="eyebrow">60-Second Smile Health Quiz</div>
+      <p class="sub" style="margin-bottom:22px;">5 quick questions. Get your personalized results at the end &mdash; free and private.</p>
+    ` : '';
     container.innerHTML = `
+      ${introHook}
       <div class="q-count">Question ${currentQ + 1} of ${questions.length}</div>
       <div class="q-title">${q.title}</div>
       <div class="options">
@@ -625,6 +607,9 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
       </div>
     `).join('');
   }
+
+  // Kick off the quiz immediately on load — no separate "Start" screen
+  initQuiz();
 </script>
 </body>
 </html>
