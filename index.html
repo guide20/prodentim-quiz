@@ -467,6 +467,10 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
 
   const questions = [
     {
+      title: "How would you describe your current oral care routine?",
+      options: ["Solid — brush, floss, regular checkups", "Decent, but inconsistent", "Honestly, could be a lot better"]
+    },
+    {
       title: "How often do you notice bad breath, even right after brushing?",
       options: ["Rarely or never", "Sometimes, especially by afternoon", "Often — it's a daily concern"]
     },
@@ -477,10 +481,6 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
     {
       title: "Have your teeth looked more yellow or dull to you lately?",
       options: ["Not really", "A little, over the last year or two", "Yes, noticeably"]
-    },
-    {
-      title: "How would you describe your current oral care routine?",
-      options: ["Solid — brush, floss, regular checkups", "Decent, but inconsistent", "Honestly, could be a lot better"]
     },
     {
       title: "Would you be interested in a natural, daily way to support gum and teeth health?",
@@ -527,7 +527,10 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
 
   function selectOption(index) {
     answers.push(index);
-    if (typeof fbq !== 'undefined') { fbq('trackCustom', 'QuestionAnswered', {question_number: currentQ + 1}); }
+    if (typeof fbq !== 'undefined') {
+      fbq('trackCustom', 'QuestionAnswered', {question_number: currentQ + 1});
+      fbq('trackCustom', 'Q' + (currentQ + 1) + '_Answered');
+    }
     const opts = document.querySelectorAll('#screen-questions .option');
     opts[index].classList.add('selected');
     opts.forEach((o, i) => { if (i !== index) o.style.opacity = '0.5'; });
@@ -595,9 +598,9 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
 
     // Build findings based on specific answers
     const findings = [];
-    if (answers[0] >= 1) findings.push("Bad breath that returns during the day is often linked to bacterial imbalance, not just food.");
-    if (answers[1] >= 1) findings.push("Tender or bleeding gums are frequently an early sign your gum health needs attention.");
-    if (answers[2] >= 1) findings.push("Dulling enamel is a common, gradual change — and one of the easiest to address early.");
+    if (answers[1] >= 1) findings.push("Bad breath that returns during the day is often linked to bacterial imbalance, not just food.");
+    if (answers[2] >= 1) findings.push("Tender or bleeding gums are frequently an early sign your gum health needs attention.");
+    if (answers[3] >= 1) findings.push("Dulling enamel is a common, gradual change — and one of the easiest to address early.");
     if (findings.length === 0) findings.push("Your routine looks solid — consistency is what protects your results long-term.");
 
     document.getElementById('findingsWrap').innerHTML = findings.map(f => `
