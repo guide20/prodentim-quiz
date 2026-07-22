@@ -358,6 +358,12 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
     font-weight: 700;
     margin-bottom: 10px;
   }
+  .recommend-connector {
+    font-size: 15px;
+    color: #D8E2DE;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
   .recommend-title {
     font-family: Georgia, 'Times New Roman', serif;
     font-size: 22px;
@@ -389,6 +395,12 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
     text-align: center;
   }
   .btn-cta:active { transform: scale(0.97); background: var(--coral-dark); }
+  .recommend-tap-note {
+    font-size: 13px;
+    color: #C3D2CC;
+    margin-top: 10px;
+    font-weight: 500;
+  }
   .recommend-micro {
     font-size: 12px;
     color: #A9BAB4;
@@ -439,10 +451,12 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
     <div id="findingsWrap"></div>
 
     <div class="recommend-card">
-      <div class="recommend-eyebrow">Recommended For You</div>
+      <div class="recommend-eyebrow">Based On Your Results</div>
+      <div class="recommend-connector" id="recommendConnector">Here's what may help, based on what you shared:</div>
       <div class="recommend-title">ProDentim Oral Probiotics</div>
       <div class="recommend-body">A daily probiotic supplement with 3.5 billion strains designed to support healthy gums, fresher breath, and a naturally balanced mouth as part of your everyday routine.</div>
-      <a class="btn-cta" href="#" id="ctaButton" target="_blank" rel="noopener">See If It's Right For You</a>
+      <a class="btn-cta" href="#" id="ctaButton" target="_blank" rel="noopener">Yes, Show Me</a>
+      <div class="recommend-tap-note">Takes 10 seconds &middot; No commitment</div>
       <div class="recommend-micro">60-day money-back guarantee from the manufacturer &mdash; see official checkout page for full terms</div>
     </div>
 
@@ -606,6 +620,17 @@ src="https://www.facebook.com/tr?id=1559524392551091&ev=PageView&noscript=1"
         <span class="finding-text">${f}</span>
       </div>
     `).join('');
+
+    // Personalize the connector line based on their top-flagged concern
+    let connectorText = "Here's what may help, based on what you shared:";
+    if (answers[1] >= 1) {
+      connectorText = "Since bad breath was one of your concerns, here's what may help:";
+    } else if (answers[2] >= 1) {
+      connectorText = "Since gum sensitivity was one of your concerns, here's what may help:";
+    } else if (answers[3] >= 1) {
+      connectorText = "Since enamel changes were one of your concerns, here's what may help:";
+    }
+    document.getElementById('recommendConnector').textContent = connectorText;
   }
 
   // Kick off the quiz immediately on load — no separate "Start" screen
